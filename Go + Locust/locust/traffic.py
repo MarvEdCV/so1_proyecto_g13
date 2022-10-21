@@ -45,7 +45,7 @@ class MessageTraffic(HttpUser):
         if (random_data is not None):
             data_to_send = json.dumps(random_data) #leemos el archivo
             printDebug (data_to_send)
-            self.client.post("/entrada", json=random_data) #endpoint que se va a consumir
+            self.client.post("/guardar", json=random_data) #endpoint que se va a consumir
         else:
             print(">> MessageTraffic: Envio de tráfico finalizado, no hay más datos que enviar.")
             self.stop(True)
