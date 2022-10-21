@@ -46,7 +46,7 @@ func newPrediction(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/inicio", Inicio).Methods("GET")
-	router.HandleFunc("/guardar", newPrediction).Methods("POST")
+	router.HandleFunc("/input", newPrediction).Methods("POST")
 	log.Println("Server iniciado en el puerto 3050")
 	log.Fatal(http.ListenAndServe(":3050", handlers.CORS(handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"}), handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}), handlers.AllowedOrigins([]string{"*"}))(router)))
 }
