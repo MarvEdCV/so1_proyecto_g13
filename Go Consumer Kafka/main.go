@@ -21,6 +21,5 @@ func main() {
 			break
 		}
 		fmt.Println(string(bytes))
-		log.Println(string(bytes))
 	}
 }
