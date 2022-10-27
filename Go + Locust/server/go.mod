@@ -9,8 +9,11 @@ require (
 	github.com/githubnemo/CompileDaemon v1.4.0 // indirect
 	github.com/gorilla/handlers v1.5.1 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
+	github.com/klauspost/compress v1.15.7 // indirect
 	github.com/mattn/go-colorable v0.1.4 // indirect
 	github.com/mattn/go-isatty v0.0.11 // indirect
+	github.com/pierrec/lz4/v4 v4.1.15 // indirect
 	github.com/radovskyb/watcher v1.0.7 // indirect
-	golang.org/x/sys v0.0.0-20191026070338-33540a1f6037 // indirect
+	github.com/segmentio/kafka-go v0.4.35 // indirect
+	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 )
