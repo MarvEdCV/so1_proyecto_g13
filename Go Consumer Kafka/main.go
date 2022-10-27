@@ -20,6 +20,6 @@ func main() {
 		if err != nil {
 			break
 		}*/
-	fmt.Println(message.Value)
+	fmt.Println(string(message.Value))
 	//}
 }
