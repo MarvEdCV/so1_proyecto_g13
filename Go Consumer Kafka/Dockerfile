@@ -1,16 +1,17 @@
-FROM golang:1.17 as build-env
+FROM golang:1.18-alpine
 
-WORKDIR /go/src/app
-COPY *.go .
+WORKDIR /app
 
-RUN go mod init
-RUN go get -d -v ./...
-RUN go vet -v
-RUN go test -v
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
 
-RUN CGO_ENABLED=0 go build -o /go/bin/app
+COPY . .
 
-CMD ["/go/bin/app"]
+RUN go build -o /consumer
+
+
+CMD["/consumer"]
 #FROM gcr.io/distroless/static
 #ENV MONGO_ADDRESS="mongodb://root:root@172.17.0.2:27017"
 #ENV REDIS_ADDRESS="redis://34.136.166.39:6379"
