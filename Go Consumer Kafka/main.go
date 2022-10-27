@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	log.Println("Estoy en el consumer :)")
 	conn, _ := kafka.DialLeader(context.Background(), "tcp", "kafka-cluster-kafka-bootstrap:9092", "input-kafka", 0)
 	conn.SetWriteDeadline(time.Now().Add(time.Second * 10))
 
