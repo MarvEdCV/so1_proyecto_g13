@@ -4,9 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/segmentio/kafka-go"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"time"
 )
+
+var MONGO_URL = "mongodb://cosmosdb-mongo-sopes1:FQZmTPpDpwOjpqkAUdkdLrT8qnCZktOjbm3Fi6R2lddZUSWTtHre1yQGm7NEVTE5VV4zU9thxpzPACDb8hKlKA==@cosmosdb-mongo-sopes1.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@cosmosdb-mongo-sopes1@"
 
 func main() {
 	log.Println("Estoy en el consumer :)")
@@ -22,4 +27,28 @@ func main() {
 		}*/
 	fmt.Println(string(message.Value))
 	//}
+
+	var doc interface{}
+	errr := bson.UnmarshalExtJSON([]byte(message.Value), true, &doc)
+	if errr != nil {
+		log.Fatal(errr)
+	}
+	//CONEXION A LA BASE DE DATOS E INSERCION DE DATOS
+	client, err := mongo.NewClient(options.Client().ApplyURI(MONGO_URL))
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer client.Disconnect(ctx)
+
+	collection := client.Database("UsactarMongoDB").Collection("data")
+	res, insertErr := collection.InsertOne(ctx, doc)
+	if insertErr != nil {
+		log.Fatal(insertErr)
+	}
+	fmt.Println(res)
 }
