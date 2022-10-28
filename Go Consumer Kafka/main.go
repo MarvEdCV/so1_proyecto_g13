@@ -4,31 +4,44 @@ import (
 	"context"
 	"fmt"
 	"github.com/segmentio/kafka-go"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
-	"time"
 )
 
 var MONGO_URL = "mongodb://cosmosdb-mongo-sopes1:FQZmTPpDpwOjpqkAUdkdLrT8qnCZktOjbm3Fi6R2lddZUSWTtHre1yQGm7NEVTE5VV4zU9thxpzPACDb8hKlKA==@cosmosdb-mongo-sopes1.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@cosmosdb-mongo-sopes1@"
 
 func main() {
 	log.Println("Estoy en el consumer :)")
-	conn, _ := kafka.DialLeader(context.Background(), "tcp", "kafka-cluster-kafka-bootstrap:9092", "input-kafka", 0)
-	conn.SetWriteDeadline(time.Now().Add(time.Second * 10))
+	/*
+		conn, _ := kafka.DialLeader(context.Background(), "tcp", "kafka-cluster-kafka-bootstrap:9092", "input-kafka", 0)
+		conn.SetWriteDeadline(time.Now().Add(time.Second * 10))
 
-	message, _ := conn.ReadMessage(1e6)
-	/*bytes := make([]byte, 1e3)
+		message, _ := conn.ReadMessage(1e6)
+		/*bytes := make([]byte, 1e3)
+		for {
+			_, err := batch.Read(bytes)
+			if err != nil {
+				break
+			}
+		fmt.Println(string(message.Value))
+		//}
+	*/
+	conf := kafka.ReaderConfig{
+		Brokers:     []string{"kafka-cluster-kafka-bootstrap:9092"},
+		Topic:       "input-kafka",
+		GroupID:     "matches-group",
+		StartOffset: kafka.LastOffset,
+	}
+	reader := kafka.NewReader(conf)
+
 	for {
-		_, err := batch.Read(bytes)
+		message, err := reader.ReadMessage(context.Background())
 		if err != nil {
-			break
-		}*/
-	fmt.Println(string(message.Value))
-	//}
-
-	var doc interface{}
+			fmt.Println("Ocurrio un error", err)
+			continue
+		}
+		fmt.Println("El mensaje es: ", string(message.Value))
+	}
+	/*var doc interface{}
 	errr := bson.UnmarshalExtJSON([]byte(message.Value), true, &doc)
 	if errr != nil {
 		log.Fatal(errr)
@@ -51,4 +64,5 @@ func main() {
 		log.Fatal(insertErr)
 	}
 	fmt.Println(res)
+	*/
 }
