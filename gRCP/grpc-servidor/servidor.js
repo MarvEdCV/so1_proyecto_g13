@@ -21,7 +21,7 @@ const client = redis.createClient({
     password: KEY_REDIS
 });
 async function AddPrediction(call,callback){
-    await client.connect();
+
     await client.set("Testeo2",JSON.stringify({
         team1: call.request.team1,
         team2: call.request.team2,
@@ -53,6 +53,7 @@ async function main(){
     console.log("\nCache command: CLIENT LIST");
     console.log("Cache response : " + await client.sendCommand(["CLIENT", "LIST"]));
      */
+    await client.connect();
     var server=new grpc.Server();
     server.addService(usactar_proto.GrpcConnection.service,{
         AddPrediction:AddPrediction
