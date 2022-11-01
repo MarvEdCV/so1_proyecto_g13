@@ -16,7 +16,7 @@ spec:
         app: deploy-grcp-client
     spec:
       containers:
-        - image: marved/grcp-server
+        - image: marved/grcp-client
           name: node-kube
           imagePullPolicy: Always
           ports:
