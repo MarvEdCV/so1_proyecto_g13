@@ -1,6 +1,6 @@
 const redis = require('redis');
 var PROTO_PATH = './proto/config.proto';
-
+const crypto = require('crypto');
 var grpc = require('@grpc/grpc-js');
 var protoLoader = require('@grpc/proto-loader');
 var packageDefinition = protoLoader.loadSync(
@@ -21,14 +21,15 @@ const client = redis.createClient({
     password: KEY_REDIS
 });
 async function AddPrediction(call,callback){
-
-    await client.set("Testeo2",JSON.stringify({
+    let id = crypto.randomUUID();
+    console.log(id)
+    await client.set(id,JSON.stringify({
         team1: call.request.team1,
         team2: call.request.team2,
         score: call.request.score,
         phase: call.request.phase
     }))
-    callback(null,{message: 'Caso insertado en la base de datos'})
+    callback(null,{message: `Caso insertado en la base de datos${id}`})
 }
 
 async function main(){
@@ -62,7 +63,7 @@ async function main(){
     server.start();
     console.log('gRCP server on port 50051')
 })
-    console.log("\nDone");
+    console.log("\nEsperando trafico");
 
 }
 main();
