@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: deploy-go-api
+  name: deploy-go-api
+  namespace: space-azure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy-go-api
+  template:
+    metadata:
+      labels:
+        app: deploy-go-api
+    spec:
+      containers:
+        - image: marved/go-api-azure
+          name: go-kube
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9093
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: svc-go-api
+  name: svc-go-api
+  namespace: space-azure
+spec:
+  type: LoadBalancer
+  ports:
+    - name: svc-go-api
+      port: 9093
+      targetPort: 9093
+      protocol: TCP
+  selector:
+    app: deploy-go-api
