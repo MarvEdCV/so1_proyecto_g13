@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: deploy-go-consumer-kafka
+  name: deploy-go-consumer-kafka
+  namespace: space-gcp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy-go-consumer-kafka
+  template:
+    metadata:
+      labels:
+        app: deploy-go-consumer-kafka
+    spec:
+      containers:
+        - image: marved/go-consumer-kafka:latest
+          name: go-kube-consumer
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9010
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: svc-go-consumer-kafka
+  name: svc-go-consumer-kafka
+  namespace: space-gcp
+spec:
+  type: LoadBalancer
+  ports:
+    - name: svc-go-consumer-kafka
+      port: 9010
+      protocol: TCP
+  selector:
+    app: deploy-go-consumer-kafka
