@@ -1,5 +1,7 @@
-FROM node:latest AS node
+FROM node:alpine
 WORKDIR /app
-COPY . .
-RUN npm install -g npm@8.19.3
+COPY package.json ./
+COPY package-lock.json ./
+COPY ./ ./
+RUN npm i
 CMD ["npm", "run", "start"]
