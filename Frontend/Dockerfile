@@ -2,7 +2,7 @@ FROM node:latest AS node
 WORKDIR /app
 COPY . .
 RUN npm install
-RUN npm run build
+CMD ["npm", "run", "build"]
 
 FROM nginx:latest
 COPY nginx.conf /etc/nginx/nginx.conf
