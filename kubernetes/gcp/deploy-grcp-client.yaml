@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: deploy-grcp-client
+  name: deploy-grcp-client
+  namespace: space-gcp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy-grcp-client
+  template:
+    metadata:
+      labels:
+        app: deploy-grcp-client
+    spec:
+      containers:
+        - image: marved/grcp-client
+          name: node-kube
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: svc-grcp-client
+  name: svc-grcp-client
+  namespace: space-gcp
+spec:
+  type: LoadBalancer
+  ports:
+    - name: svc-grcp-client
+      port: 8083
+      targetPort: 3000
+      protocol: TCP
+  selector:
+    app: deploy-grcp-client
+---

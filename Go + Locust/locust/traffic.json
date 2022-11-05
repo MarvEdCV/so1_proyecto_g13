@@ -1,0 +1,20 @@
+[
+  {
+    "team1": "Guatemala",
+    "team2": "Argentina",
+    "score": "2-5",
+    "phase": 1
+  },
+  {
+    "team1": "Nicaragua",
+    "team2": "Panama",
+    "score": "6-7",
+    "phase": 1
+  },
+  {
+    "team1": "Argentina",
+    "team2": "Colombia",
+    "score": "0-0",
+    "phase": 3
+  }
+]
